@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var program = require('commander');
-var INPUT_FILE_DEFAULT = "checks.json";
+var INPUT_FILE_DEFAULT = "IntegerArray.txt";
 
 var assertFileExists = function(infile) {
     var instr = infile.toString();
@@ -13,20 +13,29 @@ var assertFileExists = function(infile) {
     return instr;
 };
 
-
 var clone = function(fn) {
     // Workaround for commander.js issue.
     // http://stackoverflow.com/a/6772648
     return fn.bind({});
 };
 
+var loadArray = function (fileName) {
+  return [];
+}
+
+var countInversions = function (arr) {
+  return 0;
+}
+
 if(require.main == module) {
   program
-    .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
-    .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-    .option('-u, --url <url>', 'URL of data to check')
+    .option('-f, --file <file>', 'Path to file with data', clone(assertFileExists), INPUT_FILE_DEFAULT)
     .parse(process.argv);
 
+  var arr = loadArray(program.file);
+  var result = countInversions(arr);
+  console.log(result);
+
 } else {
-    exports.checkHtmlFile = checkHtmlFile;
+    exports.checkHtmlFile = countInversions;
 }
