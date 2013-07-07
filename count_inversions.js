@@ -20,11 +20,18 @@ var clone = function(fn) {
 };
 
 var loadArray = function (fileName) {
-  return [];
+  var data = fs.readFileSync(fileName).toString();
+  return data.split("\n").filter(function (item) {
+    return !!item.length
+  }).map(function(item) {
+    return ~~item;
+  });
 }
 
 var countInversions = function (arr) {
-  return 0;
+console.log(arr[0]);
+console.log(arr[arr.length-1]);
+  return arr.length;
 }
 
 if(require.main == module) {
