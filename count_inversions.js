@@ -28,7 +28,68 @@ var loadArray = function (fileName) {
   });
 }
 
+function mergeInversions(res1, res2) {
+  var res = {
+    arr: [],
+    count: res1.count + res2.count
+  };
+
+  var i1 = 0;
+  var i2 = 0;
+  var len1 = res1.arr.length;
+  var len2 = res2.arr.length;
+  var len = len1+len2;
+  var i;
+  var arr1 = res1.arr;
+  var arr2 = res2.arr;
+  
+  for (i=0; i<len; i++) {
+    if (i1 >= len1) {
+      res.arr[i] = arr2[i2];
+      i2++;
+      continue;
+    }
+    if (i2 >= len2) {
+      res.arr[i] = arr1[i1];
+      i1++;
+      res.count += arr1.length - i1;
+      continue;
+    }
+    if (arr1[i1] <= arr2[i2]) {
+      res.arr[i] = arr1[i1];
+      i1++;
+    } else {
+      res.arr[i] = arr2[i2];
+      i2++;
+      res.count += arr1.length - i1;
+    }
+  }
+  return res;
+}
+
+function recursiveInversions(arr) {
+  if (arr.length === 1) {
+    return {
+      arr: arr,
+      count: 0
+    };
+  }
+  
+  // count left
+  var res1 = recursiveInversions(arr.splice(0, arr.length/2));
+  // count right
+  var res2 = recursiveInversions(arr);
+  // merge
+  return mergeInversions(res1, res2);
+}
+
+function recursiveInversionsWrapper(arr) {
+  console.log('using recursice');
+  return  recursiveInversions(arr).count;
+}
+
 function bruteForceInversions(arr) {
+  console.log('using brute');
   var i;
   var j;
   var len = arr.length;
@@ -51,17 +112,21 @@ function bruteForceInversions(arr) {
   return count;
 }
 
-var countInversions = function (arr) {
-  return bruteForceInversions(arr);
+var countInversions = function (arr, useBrute) {
+  if (useBrute) {
+    return bruteForceInversions(arr);
+  }
+  return recursiveInversionsWrapper(arr);
 }
 
 if(require.main == module) {
   program
     .option('-f, --file <file>', 'Path to file with data', clone(assertFileExists), INPUT_FILE_DEFAULT)
+    .option('-b, --brute ', 'use brute force')
     .parse(process.argv);
 
   var arr = loadArray(program.file);
-  var result = countInversions(arr);
+  var result = countInversions(arr, program.brute);
   console.log('Result: ', result);
 
 } else {
