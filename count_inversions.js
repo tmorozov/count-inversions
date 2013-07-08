@@ -52,7 +52,6 @@ function mergeInversions(res1, res2) {
     if (i2 >= len2) {
       res.arr[i] = arr1[i1];
       i1++;
-      res.count += arr1.length - i1;
       continue;
     }
     if (arr1[i1] <= arr2[i2]) {
@@ -61,7 +60,7 @@ function mergeInversions(res1, res2) {
     } else {
       res.arr[i] = arr2[i2];
       i2++;
-      res.count += arr1.length - i1;
+      res.count += len1 - i1;
     }
   }
   return res;
