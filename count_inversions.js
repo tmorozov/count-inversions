@@ -28,10 +28,31 @@ var loadArray = function (fileName) {
   });
 }
 
+function bruteForceInversions(arr) {
+  var i;
+  var j;
+  var len = arr.length;
+  var len_1 = len - 1;
+  if (len<2) {
+    return 0;
+  }
+
+  var count = 0;
+  for(i=0; i<len_1; i++) {
+    for(j=i+1; j<len; j++) {
+      if (arr[i] > arr[j]) {
+        count++;
+      }
+    }
+    if (i%1000 === 0) {
+      console.log(i/1000+'K', count);
+    }
+  }
+  return count;
+}
+
 var countInversions = function (arr) {
-console.log(arr[0]);
-console.log(arr[arr.length-1]);
-  return arr.length;
+  return bruteForceInversions(arr);
 }
 
 if(require.main == module) {
@@ -41,7 +62,7 @@ if(require.main == module) {
 
   var arr = loadArray(program.file);
   var result = countInversions(arr);
-  console.log(result);
+  console.log('Result: ', result);
 
 } else {
     exports.checkHtmlFile = countInversions;
