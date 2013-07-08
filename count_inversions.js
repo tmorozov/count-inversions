@@ -76,7 +76,7 @@ function recursiveInversions(arr) {
   }
   
   // count left
-  var res1 = recursiveInversions(arr.splice(0, arr.length/2));
+  var res1 = recursiveInversions(arr.splice(0, ~~(arr.length/2)));
   // count right
   var res2 = recursiveInversions(arr);
   // merge
